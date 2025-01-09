@@ -74,50 +74,57 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
 
   const fetchKeyMetrics = useCallback(async () => {
     if (cachedData) {
-      const promptMap = new Map();
-      promptMap.set(
-        "Market Cap",
-        `Summarize _ market cap of ${cachedData.name} and how it benefits or disadvantaging the perception of the stock and don't specify the numbers (in less than 30 words).`
-      );
-      promptMap.set(
-        "Shares Outstanding",
-        `Summarize ${cachedData.name}'s shares outstanding value and why it’s good or bad and don't specify the numbers(in less than 30 words).`
-      );
-      promptMap.set(
-        "Shares Float",
-        `Summarize ${cachedData.name} stock’s shares float value and why it’s good or bad compared to _ peer group and don't specify the numbers (in less than 30 words).`
-      );
-      promptMap.set(
-        "EV/EBITDA",
-        `Summarize if ${cachedData.name} EV/EBITDA ratio is high or low. Discuss the implications of this and don't specify the numbers (in less than 30 words) `
-      );
-      promptMap.set(
-        "P/E",
-        `Summarize ${cachedData.name} P/E value and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 30 words) `
-      );
-      promptMap.set(
-        "Dividend Rate",
-        `Summarize ${cachedData.name} Dividend Yield and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 30 words)`
-      );
+      try {
+        const promptMap = new Map([
+          [
+            "Market Cap",
+            `Summarize _ market cap of ${cachedData.name} and how it benefits or disadvantaging the perception of the stock and don't specify the numbers (in less than 30 words).`,
+          ],
+          [
+            "Shares Outstanding",
+            `Summarize ${cachedData.name}'s shares outstanding value and why it's good or bad and don't specify the numbers(in less than 30 words).`,
+          ],
+          [
+            "Shares Float",
+            `Summarize ${cachedData.name} stock's shares float value and why it's good or bad compared to _ peer group and don't specify the numbers (in less than 30 words).`,
+          ],
+          [
+            "EV/EBITDA",
+            `Summarize if ${cachedData.name} EV/EBITDA ratio is high or low. Discuss the implications of this and don't specify the numbers (in less than 30 words) `,
+          ],
+          [
+            "P/E",
+            `Summarize ${cachedData.name} P/E value and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 30 words) `,
+          ],
+          [
+            "Dividend Rate",
+            `Summarize ${cachedData.name} Dividend Yield and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 30 words)`,
+          ],
+        ]);
 
-      const metricsData = [
-        { label: "Market Cap", value: cachedData.marketCap },
-        { label: "Shares Outstanding", value: cachedData.sharesOutstanding },
-        { label: "Shares Float", value: cachedData.float },
-        { label: "EV/EBITDA", value: cachedData.evEbitda },
-        { label: "P/E", value: cachedData.peTtm },
-        { label: "Dividend Rate", value: cachedData.dividendRate },
-      ];
+        const metricsData = [
+          { label: "Market Cap", value: cachedData.marketCap },
+          { label: "Shares Outstanding", value: cachedData.sharesOutstanding },
+          { label: "Shares Float", value: cachedData.float },
+          { label: "EV/EBITDA", value: cachedData.evEbitda },
+          { label: "P/E", value: cachedData.peTtm },
+          { label: "Dividend Rate", value: cachedData.dividendRate },
+        ];
 
-      const metricsWithDescriptions = await Promise.all(
-        metricsData.map(async (metric) => ({
-          ...metric,
-          description: await dsc(promptMap.get(metric.label)),
-        }))
-      );
+        const metricsWithDescriptions = await Promise.all(
+          metricsData.map(async (metric) => ({
+            ...metric,
+            description: await dsc(promptMap.get(metric.label) || ""),
+          }))
+        );
 
-      setKeyMetrics(metricsWithDescriptions);
-      setLoadingStates((prev) => ({ ...prev, keyMetrics: false }));
+        setKeyMetrics(metricsWithDescriptions);
+      } catch (error) {
+        console.error("Error fetching key metrics:", error);
+        setKeyMetrics([]);
+      } finally {
+        setLoadingStates((prev) => ({ ...prev, keyMetrics: false }));
+      }
     }
   }, [cachedData]);
 
@@ -517,7 +524,7 @@ function Conclusion({
 
 async function getImage(_name: string) {
   const data = { stockName: _name };
-  const res = await fetch("http://localhost:8010/generate-image", {
+  const res = await fetch("/api/image", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -530,7 +537,7 @@ async function getImage(_name: string) {
 
 async function dsc(_prompt: string) {
   const data = { prompt: _prompt };
-  const res = await fetch("http://localhost:8005/api/gpt", {
+  const res = await fetch("/api/prompt", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

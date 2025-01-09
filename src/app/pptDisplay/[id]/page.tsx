@@ -23,28 +23,21 @@ export default function Page() {
       try {
         setIsLoading(true);
         const fetchStockData = async (id: string) => {
-          try {
-            const response = await fetch(
-              `http://localhost:4000/api/stock/${id}`
-            );
-            if (!response.ok) {
-              throw new Error("Failed to fetch stock data");
-            }
-            const data = await response.json();
-            console.log(
-              "Stock data for",
-              id,
-              ":",
-              JSON.stringify(data, null, 2)
-            );
-            return data;
-          } catch (error) {
-            console.error("Error:", error);
+          const response = await fetch("/api/stock", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ ticker: id }),
+          });
+          if (!response.ok) {
+            throw new Error("Failed to fetch stock data");
           }
+          return await response.json();
         };
 
         const data = await fetchStockData(id);
-
+        console.log(data);
         setStockData(data);
       } catch (err) {
         setError(
