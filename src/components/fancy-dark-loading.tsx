@@ -1,28 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { Progress } from "@/components/ui/progress";
 
 export default function Component() {
-  const [progress, setProgress] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        if (oldProgress === 100) {
-          return 0;
-        }
-        const diff = Math.random() * 10;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 500);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-black text-white">
       <div className="w-64 text-center">

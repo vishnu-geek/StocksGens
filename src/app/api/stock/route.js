@@ -1,6 +1,6 @@
 import yahooFinance from "yahoo-finance2";
 import dotenv from "dotenv";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 dotenv.config();
 
