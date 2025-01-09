@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import yahooFinance from "yahoo-finance2";
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export async function POST(req) {
   try {
     const body = await req.json();
     const { stockName } = body;

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
 import yahooFinance from "yahoo-finance2";
 import dotenv from "dotenv";
+import { NextRequest, NextResponse } from "next/server";
 
 dotenv.config();
 
-const formatLargeNumber = (num?: number): string => {
+const formatLargeNumber = (num) => {
   if (!num) return "N/A";
   if (num >= 1e12) return (num / 1e12).toFixed(2) + "T";
   if (num >= 1e9) return (num / 1e9).toFixed(2) + "B";
@@ -12,14 +12,14 @@ const formatLargeNumber = (num?: number): string => {
   return num.toString();
 };
 
-export async function POST(req: NextRequest): Promise<NextResponse> {
+export async function POST(req) {
   if (req.method !== "POST") {
     return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
   }
 
   try {
     const body = await req.json();
-    const { ticker } = body as { ticker?: string };
+    const { ticker } = body;
 
     if (!ticker) {
       return NextResponse.json(

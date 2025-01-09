@@ -4,16 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 dotenv.config();
 
-interface BFLResponse {
-  id: string;
-}
-
-interface BFLResultResponse {
-  status: string;
-  result?: { sample: string };
-}
-
-export async function POST(req: NextRequest) {
+export async function POST(req) {
   try {
     const { stockName } = await req.json();
 
@@ -27,7 +18,7 @@ export async function POST(req: NextRequest) {
     const prompt = `${stockName} logo with futuristic city, blue and purple color, neon glow, detailed, high quality. Modern, high tech, soft, bold aesthetic, using dark shades of purple, blue, and black in a gradient`;
 
     // Generate image request to BFL API
-    const generateResponse = await axios.post<BFLResponse>(
+    const generateResponse = await axios.post(
       "https://api.bfl.ml/v1/flux-pro-1.1",
       {
         prompt,
@@ -37,7 +28,7 @@ export async function POST(req: NextRequest) {
       {
         headers: {
           accept: "application/json",
-          "x-key": process.env.BFL_API_KEY!,
+          "x-key": process.env.BFL_API_KEY,
           "Content-Type": "application/json",
         },
       }
@@ -52,18 +43,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let imageUrl: string | null = null;
+    let imageUrl = null;
     let status = "Processing";
 
     // Poll the result from BFL API until the image is ready
     while (status !== "Ready") {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const resultResponse = await axios.get<BFLResultResponse>(
+      const resultResponse = await axios.get(
         `https://api.bfl.ml/v1/get_result?id=${requestId}`,
         {
           headers: {
             accept: "application/json",
-            "x-key": process.env.BFL_API_KEY!,
+            "x-key": process.env.BFL_API_KEY,
           },
         }
       );
@@ -82,7 +73,7 @@ export async function POST(req: NextRequest) {
         { status: 500 }
       );
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error generating or fetching image:", error.message);
     return NextResponse.json(
       { error: "Failed to generate or retrieve image" },

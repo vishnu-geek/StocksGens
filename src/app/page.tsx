@@ -8,8 +8,8 @@ export default function Home() {
   const [topic, setTopic] = useState<string>("");
   const [typed, setTyped] = useState<boolean>(false);
   const [ticker, setTicker] = useState<string>("");
-  const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [error, setError] = useState<string | null>(null);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -50,14 +50,14 @@ export default function Home() {
   const handleInput = async (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setTopic(val);
-    setError(null);
+    // setError(null);
 
     if (val.length === 0) {
       setTicker("");
       return;
     }
 
-    setIsLoading(true);
+    // setIsLoading(true);
 
     try {
       const response = await fetch("/api/ticker", {
@@ -76,11 +76,11 @@ export default function Home() {
       setTicker(data.ticker);
     } catch (err) {
       console.error("Error fetching ticker:", err);
-      setError("Failed to fetch stock ticker. Please try again.");
+      // setError("Failed to fetch stock ticker. Please try again.");
       setTicker("");
     } finally {
       setTyped(true);
-      setIsLoading(false);
+      // setIsLoading(false);
     }
   };
 
@@ -88,7 +88,7 @@ export default function Home() {
     if (ticker) {
       router.push(`/pptDisplay/${ticker}`);
     } else {
-      setError("Please enter a valid stock name.");
+      // setError("Please enter a valid stock name.");
     }
   };
 
