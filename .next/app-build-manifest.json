@@ -1,0 +1,62 @@
+{
+  "pages": {
+    "/_not-found/page": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/app/_not-found/page-9312ed67cf197dca.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/css/81b23b8b98de81d2.css",
+      "static/chunks/app/layout-183f218684f52228.js"
+    ],
+    "/api/image/route": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/app/api/image/route-682908e1360de74e.js"
+    ],
+    "/api/prompt/route": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/app/api/prompt/route-214e7029f7cdbd39.js"
+    ],
+    "/api/stock/route": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/app/api/stock/route-308ba5b367f3bd7f.js"
+    ],
+    "/api/ticker/route": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/app/api/ticker/route-cc60bc1a86525611.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/app/page-223b070090f80840.js"
+    ],
+    "/pptDisplay/[id]/page": [
+      "static/chunks/webpack-317bee57a8023aed.js",
+      "static/chunks/4bd1b696-7750a378514fd944.js",
+      "static/chunks/517-9258f4a906b405d3.js",
+      "static/chunks/main-app-a81b781f60bf22f6.js",
+      "static/chunks/934-5a248d06a55c8cbc.js",
+      "static/chunks/app/pptDisplay/[id]/page-42e9a304d8e91140.js"
+    ]
+  }
+}
