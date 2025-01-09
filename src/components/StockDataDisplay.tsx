@@ -20,8 +20,12 @@ interface Strength {
 export function StockDataDisplay({ data }: StockDataDisplayProps) {
   const [cachedData, setCachedData] = useState<StockData | null>(null);
   const [companyDescription, setCompanyDescription] = useState<string>("");
-  const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const [imageSrc2, setImageSrc2] = useState<string | null>(null);
+  const [imageSrc, setImageSrc] = useState<string>(
+    "https://images.unsplash.com/photo-1456930266018-fda42f7404a7?q=80&w=1595&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  );
+  const [imageSrc2, setImageSrc2] = useState<string>(
+    "https://images.unsplash.com/photo-1456930266018-fda42f7404a7?q=80&w=1595&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+  );
   const [keyMetrics, setKeyMetrics] = useState<
     Array<{ label: string; value: string | number; description: string }>
   >([]);
@@ -245,7 +249,6 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
           name={cachedData.name}
           description={companyDescription}
           imageSrc={imageSrc}
-          alt={`${data.name} visual representation`}
         />
       )}
       {loadingStates.keyMetrics ? (
