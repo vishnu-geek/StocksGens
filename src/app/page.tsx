@@ -2,17 +2,34 @@
 
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { createSupabaseClient } from "@/lib/supaBaseClient";
+import { getCurrentUser, signOut } from "@/lib/authUtils";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export default function Home() {
   const interBubbleRef = useRef<HTMLDivElement>(null);
   const [topic, setTopic] = useState<string>("");
   const [typed, setTyped] = useState<boolean>(false);
   const [ticker, setTicker] = useState<string>("");
-  // const [error, setError] = useState<string | null>(null);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [userLogged, setUserLogged] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
+    const checkAuthStatus = async () => {
+      const user = await getCurrentUser();
+      console.log(user);
+      setUserLogged(!!user);
+    };
+
+    checkAuthStatus();
+
+    const client: SupabaseClient = createSupabaseClient();
+    const { data: authListener } = client.auth.onAuthStateChange(
+      (event, session) => {
+        setUserLogged(!!session?.user);
+      }
+    );
+
     let curX = 0;
     let curY = 0;
     let tgX = 0;
@@ -44,20 +61,18 @@ export default function Home() {
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      authListener.subscription.unsubscribe();
     };
   }, []);
 
   const handleInput = async (e: ChangeEvent<HTMLInputElement>) => {
     const val = e.target.value;
     setTopic(val);
-    // setError(null);
 
     if (val.length === 0) {
       setTicker("");
       return;
     }
-
-    // setIsLoading(true);
 
     try {
       const response = await fetch("/api/ticker", {
@@ -76,20 +91,21 @@ export default function Home() {
       setTicker(data.ticker);
     } catch (err) {
       console.error("Error fetching ticker:", err);
-      // setError("Failed to fetch stock ticker. Please try again.");
       setTicker("");
     } finally {
       setTyped(true);
-      // setIsLoading(false);
     }
   };
 
   const handleSubmit = () => {
     if (ticker) {
       router.push(`/pptDisplay/${ticker}`);
-    } else {
-      // setError("Please enter a valid stock name.");
     }
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/login");
   };
 
   return (
@@ -99,23 +115,45 @@ export default function Home() {
           <div className="container mx-auto px-4 py-6 flex justify-between items-center">
             <h1 className="text-4xl font-bold tracking-tight">StockGen</h1>
             <nav>
-              <ul className="flex space-x-6">
-                <li>
-                  <a href="#" className="hover:text-pink-400 transition-colors">
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-pink-400 transition-colors">
-                    About
-                  </a>
-                </li>
-                <li>
-                  <a href="#" className="hover:text-pink-400 transition-colors">
-                    Contact
-                  </a>
-                </li>
-              </ul>
+              {!userLogged ? (
+                <ul className="flex space-x-6">
+                  <li>
+                    <button
+                      className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all duration-300"
+                      onClick={() => router.push("/signup")}
+                    >
+                      Sign Up
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all duration-300"
+                      onClick={() => router.push("/login")}
+                    >
+                      Log In
+                    </button>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="flex space-x-6">
+                  <li>
+                    <button
+                      className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all duration-300"
+                      onClick={() => router.push("/dashboard")}
+                    >
+                      Dashboard
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      className="px-6 py-3 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all duration-300"
+                      onClick={handleSignOut}
+                    >
+                      Sign Out
+                    </button>
+                  </li>
+                </ul>
+              )}
             </nav>
           </div>
         </header>
@@ -142,9 +180,9 @@ export default function Home() {
               placeholder="Enter stock topic"
             />
             <button
-              className={`px-6 py-3  ${
+              className={`px-6 py-3 ${
                 typed
-                  ? "bg-gradient-to-r  from-pink-500 to-purple-600"
+                  ? "bg-gradient-to-r from-pink-500 to-purple-600"
                   : "bg-slate-600"
               } rounded-lg text-white font-semibold shadow-md hover:from-pink-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 transition-all duration-300`}
               onClick={handleSubmit}
