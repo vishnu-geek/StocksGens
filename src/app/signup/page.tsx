@@ -88,8 +88,14 @@ export default function SignUp() {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="login_back flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
-      <Card className="w-full max-w-md bg-white/10 backdrop-blur-lg text-white space-y-5 border-0 shadow-2xl">
+    <div
+      className="flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8"
+      style={{
+        background: "linear-gradient(to bottom, #6a11cb, #2575fc)",
+        color: "#fff",
+      }}
+    >
+      <Card className="w-full max-w-md bg-gradient-to-r from-purple-700 via-purple-800 to-purple-900 text-white space-y-5 border-0 shadow-xl rounded-xl">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-center sm:text-3xl">
             Sign Up
@@ -114,7 +120,7 @@ export default function SignUp() {
                   required
                   value={firstName}
                   onChange={(e) => setFirstName(e.target.value)}
-                  className="bg-white bg-opacity-20 border-gray-300 text-white placeholder:text-gray-300"
+                  className="bg-opacity-20 border-purple-300 text-white placeholder:text-gray-300"
                 />
               </div>
               <div className="space-y-2">
@@ -130,7 +136,7 @@ export default function SignUp() {
                   required
                   value={lastName}
                   onChange={(e) => setLastName(e.target.value)}
-                  className="bg-white bg-opacity-20 border-gray-300 text-white placeholder:text-gray-300"
+                  className="bg-opacity-20 border-purple-300 text-white placeholder:text-gray-300"
                 />
               </div>
             </div>
@@ -147,10 +153,10 @@ export default function SignUp() {
                 placeholder="m@example.com"
                 onChange={handleEmailChange}
                 required
-                className="bg-opacity-20 border-gray-300 text-white placeholder:text-gray-300"
+                className="bg-opacity-20 border-purple-300 text-white placeholder:text-gray-300"
               />
               {email && !isValidEmail && (
-                <p className="text-red-400 text-xs mt-1">
+                <p className="text-red-300 text-xs mt-1">
                   Please enter a valid email address.
                 </p>
               )}
@@ -168,12 +174,12 @@ export default function SignUp() {
                   type={showPassword ? "text" : "password"}
                   required
                   onChange={handlePasswordChange}
-                  className="bg-opacity-20 border-gray-300 text-white placeholder:text-gray-300"
+                  className="bg-opacity-20 border-purple-300 text-white placeholder:text-gray-300"
                 />
                 <button
                   type="button"
                   onClick={togglePasswordVisibility}
-                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-200"
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-300 hover:text-gray-100"
                 >
                   {showPassword ? (
                     <EyeOff className="h-5 w-5" />
@@ -183,7 +189,7 @@ export default function SignUp() {
                 </button>
               </div>
               {password && !isValidPassword && (
-                <p className="text-red-500 text-xs mt-1">
+                <p className="text-red-300 text-xs mt-1">
                   Password must be at least 8 characters long.
                 </p>
               )}
@@ -191,7 +197,7 @@ export default function SignUp() {
 
             <Button
               type="button"
-              className="w-full bg-white text-purple-700 hover:bg-gray-100 text-sm sm:text-base py-2 sm:py-3"
+              className="w-full bg-gradient-to-r from-green-400 via-blue-500 to-purple-600 text-white hover:from-green-500 hover:via-blue-600 hover:to-purple-700 text-sm sm:text-base py-2 sm:py-3"
               disabled={!signUpAvailability}
               onClick={handleSignUp}
             >
