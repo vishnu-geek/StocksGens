@@ -3,8 +3,9 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import Loading from "@/components/fancy-dark-loading";
-import { StockDataDisplay } from "@/components/StockDataDisplay";
-import type { StockData } from "../../../../types/StockData";
+import { StockDataDisplay } from "@/components/EditableStockData";
+import type { StockData } from "../../types/StockData";
+import { createSupabaseClient } from "@/lib/supaBaseClient";
 
 export default function Page() {
   const [stockData, setStockData] = useState<StockData | null>(null);
@@ -13,6 +14,15 @@ export default function Page() {
   const { id } = useParams();
 
   useEffect(() => {
+    const supabase = createSupabaseClient();
+
+    async function checkDataInDb() {
+      let { data, error } = await supabase.from("company").select("name");
+
+      console.log(data);
+    }
+
+    checkDataInDb();
     const loadStockData = async () => {
       if (typeof id !== "string") {
         setError("Invalid stock ticker");
@@ -56,5 +66,5 @@ export default function Page() {
   if (error) return <div className="text-red-500">{error}</div>;
   if (!stockData) return <div>No data available</div>;
 
-  return <StockDataDisplay data={stockData} />;
+  return <StockDataDisplay id={id} data={stockData} />;
 }

@@ -1,4 +1,4 @@
-import type { StockData } from "../../types/StockData";
+import type { StockData } from "../app/types/StockData";
 
 export function processStockData(text: string): StockData {
   const extractValue = (key: string): string => {

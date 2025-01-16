@@ -6,7 +6,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import type { StockData } from "../../types/StockData";
+import type { StockData } from "../app/types/StockData";
+import { Share } from "lucide-react";
 
 interface StockDataDisplayProps {
   data: StockData;
@@ -61,8 +62,8 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
   const fetchCompanyOverview = useCallback(async () => {
     if (cachedData) {
       try {
-        const src = await getImage(cachedData.name);
-        setImageSrc(src);
+        // const src = await getImage(cachedData.name);
+        // setImageSrc(src);
       } catch {
         setImageSrc(
           "https://images.unsplash.com/photo-1456930266018-fda42f7404a7?q=80&w=1595&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -82,37 +83,40 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
         const promptMap = new Map([
           [
             "Market Cap",
-            `Summarize _ market cap of ${cachedData.name} and how it benefits or disadvantaging the perception of the stock and don't specify the numbers (in less than 30 words).`,
+            `Summarize _ market cap of ${cachedData.name} and how it benefits or disadvantaging the perception of the stock and don't specify the numbers (in less than 20 words).`,
           ],
           [
             "Shares Outstanding",
-            `Summarize ${cachedData.name}'s shares outstanding value and why it's good or bad and don't specify the numbers(in less than 30 words).`,
+            `Summarize ${cachedData.name}'s shares outstanding value and why it's good or bad and don't specify the numbers(in less than 20 words).`,
           ],
           [
             "Shares Float",
-            `Summarize ${cachedData.name} stock's shares float value and why it's good or bad compared to _ peer group and don't specify the numbers (in less than 30 words).`,
+            `Summarize ${cachedData.name} stock's shares float value and why it's good or bad compared to _ peer group and don't specify the numbers (in less than 20 words).`,
           ],
           [
             "EV/EBITDA",
-            `Summarize if ${cachedData.name} EV/EBITDA ratio is high or low. Discuss the implications of this and don't specify the numbers (in less than 30 words) `,
+            `Summarize if ${cachedData.name} EV/EBITDA ratio is high or low. Discuss the implications of this and don't specify the numbers (in less than 20 words) `,
           ],
           [
             "P/E",
-            `Summarize ${cachedData.name} P/E value and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 30 words) `,
+            `Summarize ${cachedData.name} P/E value and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 20 words) `,
           ],
           [
             "Dividend Rate",
-            `Summarize ${cachedData.name} Dividend Yield and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 30 words)`,
+            `Summarize ${cachedData.name} Dividend Yield and how it compares to ${cachedData.name} peer group and don't specify the numbers. (in less than 20 words)`,
           ],
         ]);
 
         const metricsData = [
-          { label: "Market Cap", value: cachedData.marketCap },
-          { label: "Shares Outstanding", value: cachedData.sharesOutstanding },
-          { label: "Shares Float", value: cachedData.float },
-          { label: "EV/EBITDA", value: cachedData.evEbitda },
-          { label: "P/E", value: cachedData.peTtm },
-          { label: "Dividend Rate", value: cachedData.dividendRate },
+          { label: "Market Cap", value: "$" + cachedData.marketCap },
+          {
+            label: "Shares Outstanding",
+            value: "$" + cachedData.sharesOutstanding,
+          },
+          { label: "Shares Float", value: "$" + cachedData.float },
+          { label: "EV/EBITDA", value: cachedData.evEbitda + "x" },
+          { label: "P/E", value: cachedData.peTtm + "x" },
+          { label: "Dividend Rate", value: cachedData.dividendRate + "x" },
         ];
 
         const metricsWithDescriptions = await Promise.all(
@@ -135,10 +139,10 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
   const fetchFinancialHealth = useCallback(async () => {
     if (cachedData) {
       const financialsData = [
-        { label: "Cash Position", value: cachedData.cashPosition },
-        { label: "Total Debt", value: cachedData.totalDebt },
-        { label: "Debt to Equity", value: cachedData.debtToEquity },
-        { label: "Current Ratio", value: cachedData.currentRatio },
+        { label: "Cash Position", value: "$" + cachedData.cashPosition },
+        { label: "Total Debt", value: "$" + cachedData.totalDebt },
+        { label: "Debt to Equity", value: cachedData.debtToEquity + "x" },
+        { label: "Current Ratio", value: cachedData.currentRatio + "x" },
       ];
 
       const financialsWithDescriptions = await Promise.all(
@@ -158,7 +162,7 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
   const fetchStrengthsAndCatalysts = useCallback(async () => {
     if (cachedData) {
       const strengthsData = await dsc(
-        `Give me growth catalysts of ${cachedData.name} stock, give me 6 points,with headings, and description around 40 words`
+        `Give me growth catalysts of ${cachedData.name} stock, give me 6 points,with headings, and description not more than 40 words`
       );
       console.log(strengthsData);
       setStrengthsAndCatalysts(parsePoints(strengthsData));
@@ -171,7 +175,7 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
       const analystInfo = [
         { label: "Analyst Rating (1-5)", value: cachedData.analystRating },
         { label: "Number of Analysts", value: cachedData.numberOfAnalysts },
-        { label: "Mean Target Price", value: cachedData.meanTargetPrice },
+        { label: "Mean Target Price", value: "$" + cachedData.meanTargetPrice },
         { label: "Implied +/-", value: cachedData.impliedChange },
       ];
 
@@ -192,7 +196,7 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
   const fetchRisksAndMitigations = useCallback(async () => {
     if (cachedData) {
       const risksData = await dsc(
-        `Give me 6 Risks with explanation and also their mitigations respectively of ${cachedData.name} stock with headings and description of around 20 words for each`
+        `Give me 6 Risks with explanation and also their mitigations respectively of ${cachedData.name} stock with headings and description of not more than 20 words for each`
       );
       console.log(risksData);
       setRisksAndMitigations(parseRisksAndMitigations(risksData));
@@ -208,8 +212,8 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
         )} give a 70-100 words conclusion which include should we buy it or not?.`
       );
 
-      const image = await getImage(data.name + "Conclusion");
-      setImageSrc2(image);
+      // const image = await getImage(data.name + "Conclusion");
+      // setImageSrc2(image);
       setConclusion(conclusionData);
       setLoadingStates((prev) => ({ ...prev, conclusion: false }));
     }
@@ -241,46 +245,48 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
   }
 
   return (
-    <div className="h-full flex flex-col gap-10 p-10 items-center justify-center bg-slate-900">
-      {loadingStates.companyOverview ? (
-        <LoadingCard />
-      ) : (
-        <CompanyOverview
-          name={cachedData.name}
-          description={companyDescription}
-          imageSrc={imageSrc}
-        />
-      )}
-      {loadingStates.keyMetrics ? (
-        <LoadingCard />
-      ) : (
-        <KeyMetrics metrics={keyMetrics} />
-      )}
-      {loadingStates.financialHealth ? (
-        <LoadingCard />
-      ) : (
-        <FinancialHealth financials={financialHealth} />
-      )}
-      {loadingStates.strengthsAndCatalysts ? (
-        <LoadingCard />
-      ) : (
-        <StrengthsAndCatalysts strengths={strengthsAndCatalysts} />
-      )}
-      {loadingStates.analystHealth ? (
-        <LoadingCard />
-      ) : (
-        <AnalystHealth analystData={analystHealth} />
-      )}
-      {loadingStates.risksAndMitigations ? (
-        <LoadingCard />
-      ) : (
-        <RisksAnalysis points={risksAndMitigations} />
-      )}
-      {loadingStates.conclusion ? (
-        <LoadingCard />
-      ) : (
-        <Conclusion description={conclusion} imageSrc={imageSrc2} />
-      )}
+    <div className="m-0 p-0">
+      <div className="h-full flex flex-col gap-10 p-10 items-center justify-center bg-slate-900">
+        {loadingStates.companyOverview ? (
+          <LoadingCard />
+        ) : (
+          <CompanyOverview
+            name={cachedData.name}
+            description={companyDescription}
+            imageSrc={imageSrc}
+          />
+        )}
+        {loadingStates.keyMetrics ? (
+          <LoadingCard />
+        ) : (
+          <KeyMetrics metrics={keyMetrics} />
+        )}
+        {loadingStates.financialHealth ? (
+          <LoadingCard />
+        ) : (
+          <FinancialHealth financials={financialHealth} />
+        )}
+        {loadingStates.strengthsAndCatalysts ? (
+          <LoadingCard />
+        ) : (
+          <StrengthsAndCatalysts strengths={strengthsAndCatalysts} />
+        )}
+        {loadingStates.analystHealth ? (
+          <LoadingCard />
+        ) : (
+          <AnalystHealth analystData={analystHealth} />
+        )}
+        {loadingStates.risksAndMitigations ? (
+          <LoadingCard />
+        ) : (
+          <RisksAnalysis points={risksAndMitigations} />
+        )}
+        {loadingStates.conclusion ? (
+          <LoadingCard />
+        ) : (
+          <Conclusion description={conclusion} imageSrc={imageSrc2} />
+        )}
+      </div>
     </div>
   );
 }
@@ -296,11 +302,11 @@ function CompanyOverview({
 }) {
   return (
     <Card className="flex w-[80vw] h-[75vh] bg-zinc-900 shadow-2xl shadow-cyan-400 text-white border-0">
-      <CardHeader className="flex-1 p-16 items-center justify-center">
-        <CardTitle className="barlow-bold text-5xl pb-3 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+      <CardHeader className="flex-1 p-16 justify-center">
+        <CardTitle className="barlow-bolds text-5xl pb-3 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           {name}
         </CardTitle>
-        <CardDescription className="montserrat text-xl text-center text-white">
+        <CardDescription className="montserrat text-xl text-white">
           {description}
         </CardDescription>
       </CardHeader>
@@ -329,14 +335,14 @@ function KeyMetrics({
   return (
     <Card className="flex w-[80vw] h-[75vh] pt-8 pb-8 bg-zinc-900 shadow-2xl shadow-cyan-400 text-gray-100 border-0 overflow-hidden">
       <CardHeader className="flex-1 p-16 items-center justify-center">
-        <CardTitle className="text-2xl font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <CardTitle className="barlow-bold text-3xl font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Key Market Metrics: Reflecting Value and Potential
         </CardTitle>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {metrics.map((metric) => (
             <div
               key={metric.label}
-              className="p-6 bg-gray-800 rounded-md text-center"
+              className="montserrat p-6 bg-gray-800 rounded-md text-center"
             >
               <h3 className="text-xl font-bold">{metric.value}</h3>
               <p className="text-base font-semibold mt-2">{metric.label}</p>
@@ -361,14 +367,14 @@ function FinancialHealth({
   return (
     <Card className="flex w-[80vw] h-[75vh] bg-zinc-900 shadow-2xl shadow-cyan-400 text-gray-100 border-0">
       <CardHeader className="flex-1 p-16 items-center justify-center">
-        <CardTitle className="text-2xl font-bold pb-6 text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <CardTitle className="barlow-bold text-3xl font-bold pb-6 text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Financial Health
         </CardTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {financials.map((item) => (
             <div
               key={item.label}
-              className="p-6 bg-gray-800 rounded-md text-center"
+              className="montserrat p-6 bg-gray-800 rounded-md text-center"
             >
               <h3 className="text-xl font-bold">{item.value}</h3>
               <p className="text-base font-semibold mt-2">{item.label}</p>
@@ -385,7 +391,7 @@ function StrengthsAndCatalysts({ strengths }: { strengths: Strength[] }) {
   return (
     <Card className="flex flex-col w-[80vw] overflow-hidden h-[75vh] bg-zinc-900 shadow-2xl shadow-cyan-400 text-gray-100 border-0">
       <CardHeader className="flex-1 items-center justify-center">
-        <CardTitle className="text-2xl font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <CardTitle className="barlow-bold text-3xl font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Strengths and Catalysts for Continued Success
         </CardTitle>
       </CardHeader>
@@ -394,7 +400,7 @@ function StrengthsAndCatalysts({ strengths }: { strengths: Strength[] }) {
           {strengths.map((strength, index) => (
             <Card
               key={index}
-              className="bg-gray-800 border-0 rounded-lg pt-6 shadow-md"
+              className="montserrat bg-gray-800 border-0 rounded-lg pt-6 shadow-md"
             >
               <CardContent className="flex gap-9 items-start space-x-3">
                 <div>
@@ -402,7 +408,7 @@ function StrengthsAndCatalysts({ strengths }: { strengths: Strength[] }) {
                   <CardTitle className="text-lg pl-3 font-semibold text-white">
                     {strength.title}
                   </CardTitle>
-                  <CardDescription className="text-sm text-gray-300 mt-2">
+                  <CardDescription className=" text-sm text-gray-300 mt-2">
                     {strength.description}
                   </CardDescription>
                 </div>
@@ -427,14 +433,14 @@ function AnalystHealth({
   return (
     <Card className="flex w-[80vw] h-[75vh] bg-zinc-900 shadow-2xl shadow-cyan-400 text-gray-100 border-0">
       <CardHeader className="flex-1 p-16 items-center justify-center">
-        <CardTitle className="text-2xl pb-6 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <CardTitle className="barlow-bold text-3xl pb-6 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Analyst Health
         </CardTitle>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {analystData.map((item) => (
             <div
               key={item.label}
-              className="p-6 bg-gray-800 rounded-md text-center"
+              className="montserrat p-6 bg-gray-800 rounded-md text-center"
             >
               <h3 className="text-xl font-bold">{item.value}</h3>
               <p className="text-base font-semibold mt-2">{item.label}</p>
@@ -451,7 +457,7 @@ function RisksAnalysis({ points }: { points: Strength[] }) {
   return (
     <Card className="flex flex-col w-[80vw] h-[75vh] bg-zinc-900 shadow-2xl shadow-cyan-400 text-gray-100 border-0 overflow-hidden">
       <CardHeader className="flex-1 p-3 items-center justify-center">
-        <CardTitle className="text-2xl font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <CardTitle className="barlow-bold text-3xl font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Risks and Mitigations
         </CardTitle>
       </CardHeader>
@@ -460,7 +466,7 @@ function RisksAnalysis({ points }: { points: Strength[] }) {
           {points.map((point, index) => (
             <Card
               key={index}
-              className="bg-gray-800 border-0 rounded-lg pt-6 shadow-md"
+              className="montserrat bg-gray-800 border-0 rounded-lg pt-6 shadow-md"
             >
               <CardContent className="flex items-start space-x-3">
                 <div>
@@ -514,10 +520,10 @@ function Conclusion({
         </CardDescription>
       </CardHeader>
       <CardHeader className="flex-1 p-16 items-center justify-center">
-        <CardTitle className="text-4xl pb-3 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
+        <CardTitle className="barlow-bold text-right text-4xl pb-3 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Conclusion
         </CardTitle>
-        <CardDescription className="text-xl text-center text-gray-400">
+        <CardDescription className="montserrat text-xl text-center text-gray-400">
           {description}
         </CardDescription>
       </CardHeader>
@@ -525,18 +531,18 @@ function Conclusion({
   );
 }
 
-async function getImage(_name: string) {
-  const data = { stockName: _name };
-  const res = await fetch("/api/image", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  const response = await res.json();
-  return response.imageUrl;
-}
+// async function getImage(_name: string) {
+//   const data = { stockName: _name };
+//   const res = await fetch("/api/image", {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(data),
+//   });
+//   const response = await res.json();
+//   return response.imageUrl;
+// }
 
 async function dsc(_prompt: string) {
   const data = { prompt: _prompt };
