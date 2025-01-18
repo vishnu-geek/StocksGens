@@ -34,8 +34,6 @@ export default function Page() {
         };
 
         const data: StockData = await fetchStockData(id);
-        // data.url1 = await getImage(data.name);
-        // data.url2 = await getImage(data.name);
         console.log(data);
         setStockData(data);
       } catch (err) {
@@ -43,7 +41,6 @@ export default function Page() {
           err instanceof Error ? err.message : "Failed to load stock data"
         );
         console.error("Error loading stock data:", err);
-      } finally {
       }
     };
     const supabase = createSupabaseClient();
@@ -58,19 +55,22 @@ export default function Page() {
 
       let { data, error } = await supabase
         .from("company")
-        .select(`${user}-${id}`);
+        .select(`*`)
+        .eq("ticker", "AAPL")
+        .single();
       console.log(data);
-      if (data) {
-        let d: StockData = data;
-        setStockData(d);
-      } else {
-        let { data: stock, error } = await supabase.from("company").select(id);
+      // console.log(data);
+      // if (data) {
+      //   let d: StockData = data;
+      //   setStockData(d);
+      // } else {
+      //   let { data: stock, error } = await supabase.from("company").select(id);
 
-        if (stock) {
-          let d: StockData = stock;
-          setStockData(d);
-        } else loadStockData();
-      }
+      //   if (stock) {
+      //     let d: StockData = stock;
+      //     setStockData(d);
+      //   } else loadStockData();
+      // }
       setIsLoading(false);
     }
 
@@ -79,20 +79,7 @@ export default function Page() {
 
   if (isLoading) return <Loading />;
   if (error) return <div className="text-red-500">{error}</div>;
-  if (!stockData) return <div>No data available</div>;
+  if (!stockData) return <Loading />;
 
   return <StockDataDisplay data={stockData} id={id} />;
 }
-
-// async function getImage(_name: string) {
-//   const data = { stockName: _name };
-//   const res = await fetch("/api/image", {
-//     method: "POST",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(data),
-//   });
-//   const response = await res.json();
-//   return response.imageUrl;
-// }
