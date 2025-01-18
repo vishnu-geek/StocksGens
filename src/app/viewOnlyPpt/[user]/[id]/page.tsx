@@ -58,5 +58,5 @@ export default function Page() {
   if (error) return <div className="text-red-500">{error}</div>;
   if (!stockData) return <div>No data available</div>;
 
-  return <StockDataDisplay data={stockData} id={id} />;
+  return <StockDataDisplay data={stockData} id ={id} />;
 }

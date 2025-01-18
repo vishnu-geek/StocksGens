@@ -1,11 +1,4 @@
 {
   "/page": "app/page.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/login/page": "app/login/page.js",
-  "/signup/page": "app/signup/page.js",
-  "/_not-found/page": "app/_not-found/page.js",
-  "/api/ticker/route": "app/api/ticker/route.js",
-  "/pptDisplay/[id]/page": "app/pptDisplay/[id]/page.js",
-  "/api/stock/route": "app/api/stock/route.js",
-  "/api/prompt/route": "app/api/prompt/route.js"
+  "/favicon.ico/route": "app/favicon.ico/route.js"
 }

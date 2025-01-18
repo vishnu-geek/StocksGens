@@ -7,6 +7,7 @@ export const getCurrentUser = async (): Promise<User | null> => {
     data: { user },
   } = await client.auth.getUser();
   return user;
+
 };
 
 export const signOut = async () => {
