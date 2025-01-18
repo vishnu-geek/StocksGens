@@ -1,22 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import SaveButton from "./ui/saveButton";
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  SetStateAction,
+  Dispatch,
+} from "react";
 
 interface EditableTextProps {
   initialText: string;
   onSave: (text: string) => void;
   className?: string;
   mitigation?: boolean;
+  hasChanged: boolean;
+  setHasChanged: Dispatch<SetStateAction<boolean>>;
 }
 
 export function EditableText({
   initialText,
+  hasChanged,
+  setHasChanged,
   mitigation = false,
   onSave,
   className = "",
 }: EditableTextProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
-  const [hasChanged, setHasChanged] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
   const cursorPositionRef = useRef<number | null>(null);
 
@@ -62,23 +70,17 @@ export function EditableText({
 
   const handleSave = () => {
     onSave(text);
-    setHasChanged(false);
   };
 
   return (
     <div className="relative">
-      {hasChanged && (
-        <div className="absolute right-0 top-0 -mt-8">
-          <SaveButton onClick={() => handleSave()} />
-        </div>
-      )}
       <div
         ref={textRef}
         className={`${className} ${
           isEditing ? "border border-blue-500 rounded" : ""
         }`}
         contentEditable={isEditing}
-        onBlur={handleBlur}
+        onBlur={handleSave}
         onClick={() => setIsEditing(true)}
         onInput={handleInput}
         suppressContentEditableWarning={true}
