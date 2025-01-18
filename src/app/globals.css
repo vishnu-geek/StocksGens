@@ -39,6 +39,74 @@ body {
   --color-interactive: 140, 100, 255;
   --circle-size: 80%;
   --blending: hard-light;
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 37, 0, 106;
+  --background-end-rgb: 3, 82, 40;
+}
+
+.login_back {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+    270deg,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login_container {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.login_container label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.login_container input[type="text"],
+.login_container input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.login_container button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes moveInCircle {
@@ -76,7 +144,7 @@ body {
     transform: translateX(-50%) translateY(-10%);
   }
 }
-/* 
+
 .barlow-bold {
   font-family: "Barlow", serif;
   font-weight: 700;
@@ -88,7 +156,7 @@ body {
   font-optical-sizing: auto;
   font-weight: 300;
   font-style: normal;
-} */
+}
 
 .gradient-bg {
   width: 100vw;
