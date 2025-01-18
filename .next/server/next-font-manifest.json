@@ -1,6 +1,10 @@
 {
   "app": {
+<<<<<<< HEAD
     "[project]/src/app/page": [
+=======
+    "[project]/src/app/viewOnlyPpt/[user]/[id]/page": [
+>>>>>>> 994050be234dae054ad2096d0de0417206587e95
       "static/media/gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2",
       "static/media/or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2"
     ]

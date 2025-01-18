@@ -17,5 +17,89 @@ export interface StockData {
   meanTargetPrice: string;
   impliedChange: string;
   risksAndMitigation: string;
+  url1?: string;
+  url2?: string;
+  conclusion: string;
   recommendation: "Buy" | "Sell";
+}
+
+export interface TableType {
+  ticker: string;
+  name: string;
+  description: string;
+  marketCap: string;
+  sharesOutstanding: string;
+  float: string;
+  evEbitda: string;
+  peTtm: string;
+  dividendRate: string;
+  cashPosition: string;
+  totalDebt: string;
+  debtToEquity: string;
+  currentRatio: string;
+  strengthsAndCatalysts: string;
+  analystRating: string;
+  numberOfAnalysts: string;
+  meanTargetPrice: string;
+  impliedChange: string;
+  risksAndMitigation: string;
+  url1?: string;
+  url2?: string;
+  conclusion: string;
+  recommendation: "Buy" | "Sell";
+  // dsc
+  marketCapDsc?: string;
+  impliedChangeDsc?: string;
+  sharesOutstandingDsc?: string;
+  meanTargetPriceDsc?: string;
+  numberOfAnalystsDsc?: string;
+  analystRatingDsc?: string;
+  currentRatioDsc?: string;
+  debtToEquityDsc?: string;
+  totalDebtDsc?: string;
+  cashPositionDsc?: string;
+  dividendRateDsc?: string;
+  peTtmDsc?: string;
+  evEbitdaDsc?: string;
+  floatDsc?: string;
+}
+
+export interface EditedValType {
+  ticker?: string;
+  name?: string;
+  description?: string;
+  marketCap?: string;
+  sharesOutstanding?: string;
+  float?: string;
+  evEbitda?: string;
+  peTtm?: string;
+  dividendRate?: string;
+  cashPosition?: string;
+  totalDebt?: string;
+  debtToEquity?: string;
+  currentRatio?: string;
+  strengthsAndCatalysts?: string;
+  analystRating?: string;
+  numberOfAnalysts?: string;
+  meanTargetPrice?: string;
+  impliedChange?: string;
+  risksAndMitigation?: string;
+  url1?: string;
+  url2?: string;
+  conclusion?: string;
+  recommendation?: "Buy" | "Sell";
+  marketCapDsc?: string;
+  impliedChangeDsc?: string;
+  sharesOutstandingDsc?: string;
+  meanTargetPriceDsc?: string;
+  numberOfAnalystsDsc?: string;
+  analystRatingDsc?: string;
+  currentRatioDsc?: string;
+  debtToEquityDsc?: string;
+  totalDebtDsc?: string;
+  cashPositionDsc?: string;
+  dividendRateDsc?: string;
+  peTtmDsc?: string;
+  evEbitdaDsc?: string;
+  floatDsc?: string;
 }

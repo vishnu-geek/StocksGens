@@ -1,4 +1,11 @@
 {
+<<<<<<< HEAD
   "/page": "app/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js"
+=======
+  "/viewOnlyPpt/[user]/[id]/page": "app/viewOnlyPpt/[user]/[id]/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/api/stock/route": "app/api/stock/route.js",
+  "/api/prompt/route": "app/api/prompt/route.js"
+>>>>>>> 994050be234dae054ad2096d0de0417206587e95
 }
