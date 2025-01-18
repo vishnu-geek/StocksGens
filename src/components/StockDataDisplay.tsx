@@ -61,10 +61,9 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
 
   const fetchCompanyOverview = useCallback(async () => {
     if (cachedData) {
-      try {
-        // const src = await getImage(cachedData.name);
-        // setImageSrc(src);
-      } catch {
+      if (data.url1) {
+        setImageSrc(data.url1);
+      } else {
         setImageSrc(
           "https://images.unsplash.com/photo-1456930266018-fda42f7404a7?q=80&w=1595&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         );
@@ -111,12 +110,12 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
           { label: "Market Cap", value: "$" + cachedData.marketCap },
           {
             label: "Shares Outstanding",
-            value: "$" + cachedData.sharesOutstanding,
+            value: cachedData.sharesOutstanding,
           },
-          { label: "Shares Float", value: "$" + cachedData.float },
+          { label: "Shares Float", value: cachedData.float },
           { label: "EV/EBITDA", value: cachedData.evEbitda + "x" },
           { label: "P/E", value: cachedData.peTtm + "x" },
-          { label: "Dividend Rate", value: cachedData.dividendRate + "x" },
+          { label: "Dividend Rate", value: "$" + cachedData.dividendRate },
         ];
 
         const metricsWithDescriptions = await Promise.all(
@@ -212,8 +211,7 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
         )} give a 70-100 words conclusion which include should we buy it or not?.`
       );
 
-      // const image = await getImage(data.name + "Conclusion");
-      // setImageSrc2(image);
+      if (data.url2) setImageSrc2(data.url2);
       setConclusion(conclusionData);
       setLoadingStates((prev) => ({ ...prev, conclusion: false }));
     }
@@ -284,7 +282,11 @@ export function StockDataDisplay({ data }: StockDataDisplayProps) {
         {loadingStates.conclusion ? (
           <LoadingCard />
         ) : (
-          <Conclusion description={conclusion} imageSrc={imageSrc2} />
+          <Conclusion
+            rec={data.recommendation}
+            description={conclusion}
+            imageSrc={imageSrc2}
+          />
         )}
       </div>
     </div>
@@ -504,9 +506,11 @@ function RisksAnalysis({ points }: { points: Strength[] }) {
 function Conclusion({
   description,
   imageSrc,
+  rec,
 }: {
   description: string;
   imageSrc: string;
+  rec: string;
 }) {
   return (
     <Card className="flex w-[80vw] h-[75vh] bg-zinc-900 shadow-2xl shadow-cyan-400 text-gray-100 border-0">
@@ -523,8 +527,14 @@ function Conclusion({
         <CardTitle className="barlow-bold text-right text-4xl pb-3 font-bold text-white bg-gradient-to-r from-purple-400 via-blue-500 to-indigo-400 inline-block text-transparent bg-clip-text">
           Conclusion
         </CardTitle>
-        <CardDescription className="montserrat text-xl text-center text-gray-400">
+        <CardDescription className="montserrat text-xl text-center text-white">
           {description}
+          <div className="flex items-center justify-center">
+            <span className="font-bold text-white barlow-bold text-2xl">
+              Recommendation:{" "}
+            </span>
+            <div className="montserrat text-2xl">{" " + rec}</div>
+          </div>
         </CardDescription>
       </CardHeader>
     </Card>
